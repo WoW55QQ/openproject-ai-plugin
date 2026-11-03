@@ -106,8 +106,9 @@ description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套�
 
 ## 文件
 
-- 用 `search_documents`、`create_document`、`update_document` 讀寫文件的標題與描述（Markdown）。
-- 更新時同樣先讀取，帶 `lock_version` 避免覆蓋他人修改。
+- 用 `search_documents`、`create_document`、`update_document` 讀寫文件的標題與描述（Markdown）。透過工具建立的是一般文件（classic）。
+- 「協作文件」（collaborative，網頁上的即時共同編輯文件）的內容無法透過工具讀寫，只能改標題；內容請使用者到網頁編輯。
+- 文件沒有版本號，無法偵測別人同時修改：更新前先 `search_documents` 讀取最新描述，在其上修改。
 
 ## 其他
 
