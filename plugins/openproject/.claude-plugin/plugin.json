@@ -1,6 +1,8 @@
 {
   "name": "openproject",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "OpenProject MCP 連線（op.aplai.net）與工單慣例",
-  "author": { "name": "APLAI" }
+  "author": {
+    "name": "APLAI"
+  }
 }
