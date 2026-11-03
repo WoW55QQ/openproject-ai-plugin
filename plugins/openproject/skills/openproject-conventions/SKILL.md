@@ -1,6 +1,6 @@
 ---
 name: openproject-conventions
-description: 在 OpenProject（op.aplai.net）建立或更新工作套件時使用——Bug、Task 的描述範本、狀態用法、建立前先查重複。
+description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套件（work package／工單／Bug／Task）、改狀態、留言或設定關聯時使用——描述範本、狀態用法、建立前先查重複、刪除與批次修改前須確認。
 ---
 
 # OpenProject 工單慣例
@@ -82,9 +82,10 @@ description: 在 OpenProject（op.aplai.net）建立或更新工作套件時使�
 | On hold | 暫停，等待他人或資源 |
 | Rejected | 不做：重複、無法重現、需求取消 |
 
-可用狀態依類型與工作流程而定；改狀態前先確認目標狀態在可選清單內。
+可用狀態依類型與工作流程而定；改狀態前先用 `list_statuses` 確認目標狀態可用。
 
 ## 其他
 
 - 在描述或留言寫 `#123` 會自動連到工作套件 123。
-- 刪除或大量修改前先向使用者確認。
+- 刪除（含 `delete_work_package_relation`）或一次修改超過 1 張工單前，先列出將變更的項目，等使用者確認後再執行。
+- 使用者語意不明確時，不要擅自把工單改成 Closed 或 Rejected，先詢問。

@@ -1,6 +1,7 @@
 {
   "name": "aplai-openproject",
   "owner": { "name": "APLAI" },
+  "description": "APLAI 內部 OpenProject（op.aplai.net）AI 插件",
   "plugins": [
     {
       "name": "openproject",

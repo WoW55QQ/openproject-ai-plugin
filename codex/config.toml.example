@@ -3,6 +3,7 @@
 url = "https://op.aplai.net/mcp"
 
 [mcp_servers.openproject.oauth]
+# callback_port 與 callback_url 必須一致，且須與 OpenProject 註冊的回呼網址相同
 client_id = "byskGdzxK635Gz2ubl8tC77JaFizPEug7lCGzidFsgE"
 callback_port = 33419
 callback_url = "http://127.0.0.1:33419/callback"
