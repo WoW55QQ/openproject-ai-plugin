@@ -1,6 +1,6 @@
 ---
 name: openproject-conventions
-description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套件（work package／工單／Bug／Task）、改狀態、留言或設定關聯時使用——描述範本、狀態用法、建立前先查重複、刪除與批次修改前須確認。
+description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套件（work package／工單／Bug／Task）、改狀態、留言、設定關聯、記錄工時、上傳附件、讀寫 Wiki 或文件時使用——描述範本、狀態用法、建立前先查重複、刪除與批次修改前須確認、工時與附件與 Wiki 的注意事項。
 ---
 
 # OpenProject 工單慣例
@@ -84,8 +84,34 @@ description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套�
 
 可用狀態依類型與工作流程而定；改狀態前先用 `list_statuses` 確認目標狀態可用。
 
+## 工時
+
+- 用 `create_time_entry` 記錄。記之前確認**日期**與**時數**；使用者說「昨天」「上週五」時換算成實際日期並在回覆中寫出來。不確定就問，不要猜。
+- 活動（開發、會議等）用 `list_time_entry_activities`（帶 `project_id`）查可用選項；使用者沒指定且專案沒有預設時，可以不填。
+- 只替使用者本人記工時。要替他人記之前先確認。
+- 查詢用 `search_time_entries`（可依工作套件、專案、使用者、日期區間篩選）；進行中的計時器不會出現在結果中。
+
+## 附件
+
+- `create_attachment` 以 base64 上傳，只適合截圖、log、小型文件。大型檔案（安裝檔、影片）請使用者到網頁上傳。
+- 上傳前確認要掛在哪個工作套件、Wiki 頁面或文件上。
+- 檔案類型與大小受系統管理設定限制，被拒絕時把錯誤訊息轉告使用者。
+
+## Wiki
+
+- 讀取前用 `search_wiki_pages` 找頁面，再用 `get_wiki_page` 取完整內容。
+- `update_wiki_page` 會**整份取代**內容：先 `get_wiki_page` 取得最新內容與 `lock_version`，在其上修改後連同 `lock_version` 一起送出；收到「changed by someone else」就重新讀取再改。
+- 更新時用 `comment` 說明改了什麼，會留在版本紀錄。
+- 專案沒有啟用 Wiki 時無法建立頁面，請使用者請專案管理員到專案設定啟用。
+
+## 文件
+
+- 用 `search_documents`、`create_document`、`update_document` 讀寫文件的標題與描述（Markdown）。
+- 更新時同樣先讀取，帶 `lock_version` 避免覆蓋他人修改。
+
 ## 其他
 
+- 工時、附件、Wiki、文件都**沒有刪除工具**；需要刪除時請使用者到網頁操作。
 - 在描述或留言寫 `#123` 會自動連到工作套件 123。
 - 刪除（含 `delete_work_package_relation`）或一次修改超過 1 張工單前，先列出將變更的項目，等使用者確認後再執行。
 - 使用者語意不明確時，不要擅自把工單改成 Closed 或 Rejected，先詢問。
