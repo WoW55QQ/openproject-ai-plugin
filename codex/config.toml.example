@@ -1,0 +1,8 @@
+# 加到 ~/.codex/config.toml（Windows：%USERPROFILE%\.codex\config.toml）
+[mcp_servers.openproject]
+url = "https://op.aplai.net/mcp"
+
+[mcp_servers.openproject.oauth]
+client_id = "byskGdzxK635Gz2ubl8tC77JaFizPEug7lCGzidFsgE"
+callback_port = 33419
+callback_url = "http://127.0.0.1:33419/callback"

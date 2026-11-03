@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "openproject": {
+      "type": "http",
+      "url": "https://op.aplai.net/mcp",
+      "oauth": {
+        "clientId": "bY7CgWyabUGwqGfETDMy7887wkrYGKqwUosSmaWZsOA",
+        "callbackPort": 33418,
+        "authServerMetadataUrl": "https://op.aplai.net/.well-known/oauth-authorization-server"
+      }
+    }
+  }
+}

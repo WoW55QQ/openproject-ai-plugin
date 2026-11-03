@@ -1,0 +1,11 @@
+{
+  "name": "aplai-openproject",
+  "owner": { "name": "APLAI" },
+  "plugins": [
+    {
+      "name": "openproject",
+      "source": "./plugins/openproject",
+      "description": "讓 Claude Code 透過 MCP 操作 op.aplai.net 的 OpenProject（Microsoft 登入）"
+    }
+  ]
+}
