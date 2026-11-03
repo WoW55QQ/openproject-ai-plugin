@@ -51,6 +51,7 @@ codex mcp login openproject
 | 狀況 | 處理 |
 |---|---|
 | 瀏覽器顯示 `invalid_redirect_uri` | 回呼埠被改過。Claude Code 必須是 33418，Codex 必須是 33419 |
+| Claude Code 的 `/mcp` 無法完成登入 | 改在 PowerShell 或終端機執行 `claude mcp login plugin:openproject:openproject` |
 | 登入時說埠號被占用 | 關掉占用 33418 或 33419 的程式後重試 |
 | 登入後工具回「找不到」 | 你的 OpenProject 帳號沒有該專案權限，請專案管理員把你加入成員 |
 | 登入頁出現帳號密碼欄位 | 正常只會有 Microsoft 按鈕；若看到帳號密碼欄位，請勿輸入，並通知管理員 |
