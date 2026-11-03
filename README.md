@@ -6,7 +6,7 @@
 ## 前置需求
 
 - 已安裝 Claude Code 或 Codex CLI 其中之一：
-  - Claude Code：<https://docs.claude.com/en/docs/claude-code/setup>
+  - Claude Code：<https://code.claude.com/docs/en/setup>
   - Codex CLI：<https://developers.openai.com/codex/cli>
 - 公司 Microsoft 帳號，且已被加入 OpenProject（<https://op.aplai.net>）。
 - 以下的 `claude`、`codex` 指令請在 PowerShell（Windows）或終端機（macOS）執行，不是在 Claude 對話裡輸入。若你已在 Claude Code 對話中，也可以改輸入 `/plugin marketplace add WoW55QQ/openproject-ai-plugin` 與 `/plugin install openproject@aplai-openproject`。
@@ -23,8 +23,8 @@ claude plugin install openproject@aplai-openproject
 ## Codex CLI
 
 1. 開啟設定檔 `config.toml`：
-   - Windows PowerShell：`notepad $env:USERPROFILE\.codex\config.toml`。若提示檔案不存在，選「是」建立；若 `.codex` 資料夾不存在，先執行 `mkdir $env:USERPROFILE\.codex`。
-   - macOS：`mkdir -p ~/.codex && open -e ~/.codex/config.toml`（若檔案不存在，先執行 `touch ~/.codex/config.toml`）。
+   - Windows PowerShell：先執行 `New-Item -ItemType Directory -Force $env:USERPROFILE\.codex`（資料夾已存在也沒關係），再執行 `notepad $env:USERPROFILE\.codex\config.toml`，若提示檔案不存在，選「是」建立。
+   - macOS：`mkdir -p ~/.codex && touch ~/.codex/config.toml && open -e ~/.codex/config.toml`
 2. 把 [`codex/config.toml.example`](codex/config.toml.example) 的內容貼到檔案最後並存檔。
    - **注意**：檔案裡若已有 `[mcp_servers.openproject]`，不要重複貼上，否則 Codex 會讀取失敗；請改為替換掉舊的那一段。
 3. 執行：
