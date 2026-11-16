@@ -42,8 +42,15 @@ codex mcp login openproject
 - 「把 #181 改成 Closed，留言：已在 v1.3 修正」
 - 「幫我在 #181 記 1.5 小時，昨天，內容是修正登入流程」
 - 「把這張截圖附到 #181」（Claude Code 中提供圖片路徑）
+- 「把 D:/build/app-0.3.10.zip 附到 #181」（大檔案由 AI 取得一次性上傳通行證，用 curl 直接上傳）
 - 「讀專案 Wiki 的『部署流程』頁，把第 3 步改成先備份資料庫」
 - 「在某某專案建立一份文件『2026 Q4 會議紀錄』，內容是剛才的摘要」
+- 「在『版本紀錄』協作文件最前面加一段 0.3.10，描述是修正 webcam 低光源模糊，並附上剛上傳的 zip 連結」
+
+## 版本紀錄
+
+- **0.3.0**：大檔案上傳（`create_upload_url` 搭配 curl）；協作文件可讀寫（`get_document_content`、`insert_document_blocks`、`update_document_block`）；`create_document` 預設建立協作文件。需 OpenProject 伺服器已部署對應工具。
+- 0.2.0：加入工時、附件、Wiki、文件慣例。
 
 ## 登出與撤銷
 
