@@ -96,7 +96,7 @@ description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套�
 - 本機檔案（安裝檔、影片、壓縮檔、截圖、log 等）一律用 `create_upload_url`（帶 `container_type`、`container_id`）取得上傳通行證，再執行回傳的 `curl_command`，把其中的 `<local file path>` 換成實際的本機檔案路徑。成功會回 JSON：`id`、`filename`、`filesize`、`content_type`、`download_url`。
 - Windows PowerShell 要用 `curl.exe`，不要用 `curl`（那是 `Invoke-WebRequest` 的別名）。本機路徑含逗號或分號時，寫成 `-F "file=@\"C:/path/a,b.zip\""`。
 - 一張通行證只能上傳一個檔案，10 分鐘內有效且只能用一次（失敗也算用掉）；每個檔案各申請一次，失敗就重新申請，不要重用舊的通行證。
-- 檔案大小受 OpenProject 附件上限限制；Azure 前端單一請求約 230 秒上限，網路太慢的超大檔案可能逾時，逾時時請使用者改到網頁上傳。
+- 檔案大小受 OpenProject 附件上限限制；Azure 前端單一請求約 230 秒上限，網路太慢的超大檔案可能逾時，逾時時請使用者改到網頁上傳。上傳逾時或結果不明時，先用 `list_attachments` 確認附件是否已建立，再決定是否重傳，避免重複附件。
 - `create_attachment`（base64）只用於對話中產生、沒有存成檔案的內容（例如貼上的文字或剛產生的小段內容）；有本機檔案就不要用它。
 - 上傳前確認要掛在哪個工作套件、Wiki 頁面或文件上。
 - 檔案類型與大小受系統管理設定限制，被拒絕時把錯誤訊息轉告使用者。
@@ -125,10 +125,14 @@ description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套�
 
 流程：
 
-1. 先 `get_document_content` 取得區塊樹（每個區塊有 `id`、`type`、非預設的 `props`、`content`、`children`），**沿用既有結構的層級與可折疊（`isToggleable`）設定**，不要自創不同的排版。
+1. 先 `get_document_content` 取得區塊樹（每個區塊有 `id`、`type`、非預設的 `props`、`content`、`children`），**沿用既有結構的層級與可折疊（`isToggleable`）設定**，不要自創不同的排版。大文件的整份樹沒有分頁，會佔大量 context，只在需要時讀。
 2. 用 `insert_document_blocks` 新增：`placement` 可為 `before`、`after`（預設）、`first_child`、`last_child`，搭配 `reference_block_id`。文件為空時省略 `reference_block_id`；非空文件必須給。新區塊不能帶 `id`。一次最多 500 個區塊（含子區塊）、32 層、1 MB。
+   - 空文件省略 `reference_block_id`，**不要傳空字串**。新建的協作文件若有人用瀏覽器開過，可能已有一個空段落：此時用 `update_document_block` 寫進那段，或以它為參考插入。
 3. 用 `update_document_block` 修改既有區塊：只改該區塊本身，子區塊保留。`content` 會**整段取代**該區塊的文字（空字串為清空），所以**更新前務必先重讀**（`get_document_content`），否則會覆蓋別人剛改的字。型別不變時 `props` 會合併。
-4. 連結的 `href` 與檔案類區塊的 `url` 只允許 `http`、`https`、`mailto`、`tel` 或 `/` 開頭的站內路徑。
+   - 傳 `content` 時要傳 JSON 陣列本身（或純字串），不要把陣列序列化成字串，否則會被當成純文字。
+   - `props` 必須是該區塊類型 schema 內的鍵且型別正確（例如 heading 的 `level` 傳數字 `2`，不是字串 `"2"`）。
+   - 改了 `type` 時只套用這次給的 `props`；子區塊不能用 update 改。
+4. 連結的 `href` 與檔案類區塊的 `url` 只允許 `http`、`https`、`mailto`、`tel` 或 `/` 開頭的站內路徑。圖片、檔案類區塊的 `props.url` 也適用同樣規則；附件用上傳結果的 `download_url`。
 5. 要放檔案連結時，先依「附件」流程上傳，再用回傳的 `download_url` 插入 `link`。
 6. 做完回報插入或修改了哪幾段（區塊位置與內容摘要）。
 
@@ -147,6 +151,8 @@ description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套�
 - 「busy」：伺服器忙碌，等幾秒再重試。
 - 「did not confirm the change; it may or may not have been applied」：**先 `get_document_content` 讀取確認是否已套用，再決定要不要重試**；不可直接重試 `insert_document_blocks`，否則內容會重複。
 - 「Nothing was changed」：確定沒有變更，可以直接重試。
+- 「Invalid parameters」／「Invalid request」：參數有誤，修正後再呼叫。
+- 「Too much content」：內容太多，拆成多次呼叫。
 
 ### 一般文件
 
