@@ -49,6 +49,7 @@ codex mcp login openproject
 
 ## 版本紀錄
 
+- **0.3.1**：技能補上查看附件（截圖）的方法：用 `list_attachments` 取得新的下載網址再用 curl 下載。需 OpenProject 伺服器已修正下載網址快取。
 - **0.3.0**：大檔案上傳（`create_upload_url` 搭配 curl）；協作文件可讀寫（`get_document_content`、`insert_document_blocks`、`update_document_block`）；`create_document` 預設建立協作文件。需 OpenProject 伺服器已部署對應工具。
 - 0.2.0：加入工時、附件、Wiki、文件慣例。
 

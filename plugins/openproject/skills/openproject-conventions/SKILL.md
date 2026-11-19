@@ -100,6 +100,11 @@ description: 在 OpenProject（op.aplai.net）開單、建立或更新工作套�
 - `create_attachment`（base64）只用於對話中產生、沒有存成檔案的內容（例如貼上的文字或剛產生的小段內容）；有本機檔案就不要用它。
 - 上傳前確認要掛在哪個工作套件、Wiki 頁面或文件上。
 - 檔案類型與大小受系統管理設定限制，被拒絕時把錯誤訊息轉告使用者。
+- **查看或下載附件（例如工單裡的截圖）**：MCP 沒有直接回傳檔案內容的工具，也不要用 `readMcpResource` 讀附件網址（拿不到內容）。做法：
+  1. 用 `list_attachments` 取得附件清單，每次呼叫都會給新的 `_links.downloadLocation.href`（約 6 小時有效的下載網址，不需要登入）。
+  2. 用 `curl -sSL -o <暫存資料夾>/<檔名> "<downloadLocation>"` 下載（Windows PowerShell 用 `curl.exe`），網址要整串加引號。
+  3. 圖片用讀檔工具開啟查看；其他檔案依類型處理。
+  - 不要重用之前拿到的舊網址；下載回 403 就重新呼叫 `list_attachments` 取得新網址。`staticDownloadLocation`（`/api/v3/attachments/<id>/content`）需要網頁登入，MCP 用不了。
 
 ## Wiki
 

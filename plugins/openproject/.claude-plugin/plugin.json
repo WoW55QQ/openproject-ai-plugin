@@ -1,6 +1,6 @@
 {
   "name": "openproject",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "OpenProject MCP 連線（op.aplai.net）與工單、工時、附件（含大檔案上傳）、Wiki、文件與協作文件慣例",
   "author": {
     "name": "APLAI"
